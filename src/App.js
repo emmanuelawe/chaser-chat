@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import React from 'react'
+import {Box, ChakraProvider} from '@chakra-ui/react';
+import {StreamChat} from 'stream-chat';
+import {Chat} from 'stream-chat-react';
+import theme from './theme';
 import './App.css';
+/* import Cookies from 'universal-cookie'; */
 
-function App() {
+/* import ChannelContainer from './components/ChannelContainer';
+import ChannelListContainer from './components/ChannelListContainer'; */
+import {ChannelContainer, ChannelListContainer} from './components'
+
+const apiKey = 'xydzuu3bwysj';
+
+const client = StreamChat.getInstance(apiKey);
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ChakraProvider theme={theme}>
+        <Chat client={client} theme="team light">
+            <Box display="flex">
+            <ChannelListContainer/>
+            <ChannelContainer/>
+            </Box>
+            
+        </Chat>
+         
+    </ChakraProvider>
+  )
 }
 
-export default App;
+export default App
