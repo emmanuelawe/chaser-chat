@@ -8,13 +8,17 @@ import './App.css';
 
 /* import ChannelContainer from './components/ChannelContainer';
 import ChannelListContainer from './components/ChannelListContainer'; */
-import {ChannelContainer, ChannelListContainer} from './components'
+import {ChannelContainer, ChannelListContainer, Auth} from './components'
 
 const apiKey = 'xydzuu3bwysj';
 
 const client = StreamChat.getInstance(apiKey);
 
+const authToken = false;
+
 const App = () => {
+  if(!authToken) return <Auth/>
+
   return (
     <ChakraProvider theme={theme}>
         <Chat client={client} theme="team light">

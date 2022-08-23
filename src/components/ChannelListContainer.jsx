@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Circle, Image, Text } from '@chakra-ui/react';
-import { ChannelList, useChatContext } from 'stream-chat-react';
+import { ChannelList, ChannelPreview, ChannelPreviewMessenger, useChatContext } from 'stream-chat-react';
 import Cookies from 'universal-cookie';
 
 /* import ChannelSearch from './components/ChannelSearch';
@@ -10,6 +10,9 @@ import TeamChannelPreview from './components/TeamChannelPreview'; */
 import {ChannelSearch, TeamChannelList, TeamChannelPreview} from './';
 import HospitalIcon from '../assets/hospital.png';
 import LogoutIcon from '../assets/logout.png';
+import { List } from 'stream-chat-react/dist/components/AutoCompleteTextarea/List';
+import { Preview } from 'stream-chat-react/dist/components/ChannelPreview';
+
 
 const SideBar = () => (
   <Box h="auto" display="flex">
@@ -53,6 +56,33 @@ const ChannelListContainer = () => {
     <Box h="50rem" w="15rem" bg="#3564AF">
       <CompanyHeader/>
       <ChannelSearch/>
+      <ChannelList 
+      filters={{}}
+      channelRenderFilterFn={() => {}}
+      List={(listProps) => (
+        <TeamChannelList {...listProps}
+        type='team'
+        /> 
+      )} 
+      Preview={(previewProps) => (
+        <TeamChannelPreview {...previewProps}
+        type='team'
+        />
+      )}/>
+
+        <ChannelList 
+      filters={{}}
+      channelRenderFilterFn={() => {}}
+      List={(listProps) => (
+        <TeamChannelList {...listProps}
+        type='messaging'
+        /> 
+      )} 
+      Preview={(previewProps) => (
+        <TeamChannelPreview {...previewProps}
+        type='messaging'
+        />
+      )}/>
     </Box>
     </>
   )
