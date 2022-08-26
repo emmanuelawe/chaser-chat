@@ -1,17 +1,51 @@
 import React, {useState} from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import { ChakraProvider, Box, FormControl, FormLabel, Input, Image} from '@chakra-ui/react';
+import { ChakraProvider, Box, FormControl, FormLabel, Input, Image, Button} from '@chakra-ui/react';
 
 import signinImage from '../assets/signup.jpg';
 import theme from '../theme';
 
+const cookies = new Cookies();
+
+const initialState = {
+    fullName: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    phoneNumber: '',
+    avatarURL: ''
+}
 
 const Auth = () => {
+    const [form, setForm] = useState(initialState)
     const [isSignup, setisSignup] = useState(true);
 
-    const handleChange = () => {
+    const handleChange = (e) => {
+setForm({...form, [e.target.name]: e.target.value})
+    }
 
+    const handleSubmit = async (e) => {
+e.preventDefault();
+
+const {fullName, username, password, phoneNumber, avatarURL} = form;
+
+const URL = "http://localhost:5000/auth";
+
+const {data: {token, userId, hashedPassword}} = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {username, 
+    password, phoneNumber, avatarURL, fullName
+    })
+    cookies.set('token', token);
+    cookies.set('username', username);
+    cookies.set('fullName', fullName);
+    cookies.set('userId', userId);
+
+    if(isSignup) {
+    cookies.set('phoneNumber', phoneNumber);
+    cookies.set('avatarURL', avatarURL);
+    cookies.set('hashedPassword', hashedPassword);
+    }
+    window.location.reload();
     }
 
     const switchMode = () => {
@@ -25,11 +59,11 @@ setisSignup((prevIsSignup) => !prevIsSignup);
     <Box bg="white" h="auto" w="57rem" 
     borderRadius="lg" justifyItems="center" 
     mx="4rem" my="5rem" >
-        <Box fontWeight="extrabold" px="2rem" pt="2rem" px="2rem"
+        <Box fontWeight="extrabold" px="2rem" pt="2rem"
         fontSize="2xl">
 {isSignup 
 ? 'Sign Up' : 'Sign In'}</Box>
-<FormControl px="2rem" py="2rem" myonSubmit={()=> {}}>
+<FormControl px="2rem" py="2rem" onSubmit={handleSubmit}>
     {isSignup && (
         <Box >
         <FormLabel htmlFor='fullName'>Full Name</FormLabel>
@@ -104,6 +138,9 @@ setisSignup((prevIsSignup) => !prevIsSignup);
         required
         /></Box>
          )}
+         <Box mt="2rem" color="white">
+<Button onClick={handleSubmit} bg="#124CA1">{isSignup ? 'Sign Up' : 'Sign In'}</Button>
+         </Box>
 </FormControl>
 <Box>
 <Box pb="2rem" px="2rem"  cursor="pointer">
@@ -119,7 +156,9 @@ setisSignup((prevIsSignup) => !prevIsSignup);
     </Box>
 </Box>
 <Box display="flex" >
-    <Image src={signinImage} alt="sign in" />
+    <Image src={signinImage} alt="sign in" 
+    
+    />
 </Box>
     </Box>
     </ChakraProvider>

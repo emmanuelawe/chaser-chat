@@ -26,8 +26,8 @@ const TeamChannelList = ({children, error = false, loading, type }) => {
 
   return (
     <Box>
-      <Box>
-        <Box>
+      <Box my="1rem">
+        <Box color="white">
         {type === 'team' ? 'Channels' : ' Direct Messages'}
         </Box>
         {/* //Button to add Channel */}

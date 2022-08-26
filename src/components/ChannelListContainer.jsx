@@ -3,6 +3,7 @@ import { Box, Circle, Image, Text } from '@chakra-ui/react';
 import { ChannelList, ChannelPreview, ChannelPreviewMessenger, useChatContext } from 'stream-chat-react';
 import Cookies from 'universal-cookie';
 
+
 /* import ChannelSearch from './components/ChannelSearch';
 import TeamChannelList from './components/TeamChannelList';
 import TeamChannelPreview from './components/TeamChannelPreview'; */
@@ -14,20 +15,22 @@ import { List } from 'stream-chat-react/dist/components/AutoCompleteTextarea/Lis
 import { Preview } from 'stream-chat-react/dist/components/ChannelPreview';
 
 
-const SideBar = () => (
+const cookies = new Cookies();
+
+const SideBar = ({logout,}) => (
   <Box h="auto" display="flex">
     <Box px=".5rem" py=".5rem" h="50rem" w="4.5rem" bg="#124CA1"justifyItems="center">
       <Box my="1rem" >
       <Circle bg="white" size="3rem">
-      <Box  alignItems="center"  >
+      <Box  alignItems="center" cursor="pointer">
         <Image src={HospitalIcon} alt="Hospital" w="2rem"/>
       </Box>
       </Circle>
         </Box>
         <Box >
       <Circle bg="white" size="3rem">
-      <Box  alignItems="center"  >
-      <Image src={LogoutIcon} alt="Logout" w="2rem"/>
+      <Box  alignItems="center" onClick={logout} >
+      <Image src={LogoutIcon} alt="Logout" w="2rem" />
       </Box>
       </Circle>
         </Box>
@@ -50,9 +53,19 @@ const CompanyHeader = () => (
 
 
 const ChannelListContainer = () => {
+  const logout = () => {
+    cookies.remove('userId');
+    cookies.remove('username');
+    cookies.remove('fullName');
+    cookies.remove('phoneNumber');
+    cookies.remove('avatarURL');
+    cookies.remove('hashedPassword');
+
+    window.location.reload();
+  }
   return (
     <>
-    <SideBar/>
+    <SideBar logout={logout}/>
     <Box h="50rem" w="15rem" bg="#3564AF">
       <CompanyHeader/>
       <ChannelSearch/>
